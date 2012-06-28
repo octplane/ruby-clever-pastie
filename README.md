@@ -1,4 +1,9 @@
-ruby-clever-pastie
-==================
+Based on https://github.com/ghostandthemachine/sinatra-haml-bootstrap
+Integrate Linguist gem
 
-Ruby Auto-detect paste website with optional client side AES encryption
+
+- Auto-pigment code based on its syntax
+- AES encrypt on the client side and send encrypted value only
+- Use #anchor to decrypt
+
+
