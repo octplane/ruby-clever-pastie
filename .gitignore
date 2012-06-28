@@ -5,6 +5,7 @@
 coverage
 InstalledFiles
 lib/bundler/man
+.sass-cache
 pkg
 rdoc
 spec/reports
