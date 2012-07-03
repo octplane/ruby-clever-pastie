@@ -1,16 +1,13 @@
 .container
-    .row
-        .span4
-            %h2
-                Copie Privéee
-            %p
-Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. 
-            %p
-This is probably a #{@scores[0].inspect} snippet.
-        .span8
-            %form{:class=>'well', :method => 'POST', :action => 'paste'}
-                %textarea{:name=>'code', :class => 'input-xlarge', :rows => '10'}= @code
-                %input{:type=>'submit', :id => 'code', :class => 'btn btn-primary'}
-    %hr
+  .row
+    .span4
+      %p Copie Privée is a new kind of paste website. It will try to auto-detect the language you're pasting.
+      - if @scores && @scores.length >0
+        %p It looks like this is #{@scores.first.first.name}.
+    .span8
+      %form{:class=>'well', :method => 'POST', :action => 'paste'}
+        %textarea{:name=>'code', :class => 'input-xlarge', :rows => '10'}= @code
+        %input{:type=>'submit', :id => 'code', :class => 'btn btn-primary'}
+  %hr
 
-    %div= haml :footer
+  %div= haml :footer
