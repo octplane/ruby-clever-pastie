@@ -1,7 +1,10 @@
 
 require 'sinatra'
+require 'sinatra/partial'
 require 'haml'
 require 'linguist'
+require 'cgi'
+require 'pp'
 
 module Linguist
   # Language bayesian classifier.
@@ -10,16 +13,30 @@ module Linguist
   end
 end
   
+helpers do
+  def h(html)
+    CGI.escapeHTML html
+  end
+  def color
+    ['btn-primary', 'btn-success', 'btn-info']
+  end
+  def prefix
+    "this is "
+  end
+end
 
 get '/' do
   @code = ''
   haml :index
 end
 
-post '/paste' do
+post '/' do
   @code = params[:code]
+  puts @code
+  puts h(@code)
   classifier = Linguist::Classifier.instance
   @scores = classifier.classify(@code)
+  pp @scores
 
   haml :index
 end
