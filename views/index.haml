@@ -3,7 +3,7 @@
     .span4
       %p Copie Privée is a new kind of paste website. It will try to auto-detect the language you're pasting.
       - if @scores && @scores.length >0
-        %p It looks like this is #{@scores.first.first.name}.
+        %p It looks like this is #{@scores.first.first.name} (#{"%2.02f" % @scores.first[1]}) (or maybe #{@scores[1].first.name}, #{"%2.02f" % @scores[1][1]} or even  #{@scores[2].first.name}, #{"%2.02f" % @scores[2][1]}...).
     .span8
       %form{:class=>'well', :method => 'POST', :action => 'paste'}
         %textarea{:name=>'code', :class => 'input-xlarge', :rows => '10'}= @code

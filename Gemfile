@@ -1,5 +1,6 @@
 source :rubygems
 
+gem "unicorn"
 gem "dm-core"
 gem "sinatra"
 gem "haml"
