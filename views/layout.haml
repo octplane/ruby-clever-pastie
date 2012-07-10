@@ -19,12 +19,14 @@
 
 	
 		%link{ :href => "/bootstrap/css/bootstrap-responsive.css", :type => "text/css", :rel => "stylesheet" }	
+		%link{ :href => "/hi/styles/solarized_light.css", :type => "text/css", :rel => "stylesheet" }	
 
 		/ Le fav and touch icons 
 		%link{ rel: "apple-touch-icon", href: "/bootstrap/images/apple-touch-icon.png"}
 		%link{ rel: "shortcut icon", href: "/bootstrap/images/favicon.ico"}
 		%link{ rel: "apple-touch-icon", sizes: "72x72", href: "/bootstrap/images/apple-touch-icon-72x72.png"}
 		%link{ rel: "apple-touch-icon", sizes: "114x114", href: "/bootstrap/images/apple-touch-icon-114x114.png"}
+		%script{ :type => "text/javascript", :src =>"/bootstrap/js/jquery.js"}
 	
 	%body
 
@@ -37,7 +39,7 @@
 
 
 		/ Placed at the end of the document so the pages load faster
-		%script{ :type => "text/javascript", :src =>"/bootstrap/js/jquery.js"}
+		%script{ :type => "text/javascript", :src =>"/hi/highlight.pack.js"}
 		%script{ :type => "text/javascript", :src =>"/bootstrap/js/basic/bootstrap-transition.js"}
 		%script{ :type => "text/javascript", :src =>"/bootstrap/js/basic/bootstrap-alert.js"}
 		%script{ :type => "text/javascript", :src =>"/bootstrap/js/basic/bootstrap-modal.js"}

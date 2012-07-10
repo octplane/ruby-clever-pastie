@@ -1,3 +1,13 @@
+:javascript
+  $(document).ready(function() {
+    $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
+  });
+  function changeTo(lang) {
+    $('pre code').each(function(i, e) {
+    $(e).css('class', lang);
+    hljs.highlightBlock(e)});
+
+  }
 .container
   .row
     - if @code == ""
@@ -15,7 +25,9 @@
         = partial :language_select, locals: {'pos' => 0, 'language' => @scores[0][0].name, 'endpoint' => "set/as/#{@scores[0][0].name}", 'extra_class' => 'well' }
       .span10
         %p
-          %textarea{:name=>'code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10', :enabled => 'false'}= h @code
+          %pre
+            %code{:class => @scores[0][0].name }= h @code
+            %button{:class => 'btn btn-primary', :onclick => 'changeTo("glsl");'} Change to GLSL
       .row
         .span2 You can also select another syntax here if you feel this one is not fit.
         .span6 &nbsp; 
