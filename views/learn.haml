@@ -1,0 +1,14 @@
+.container
+  .hero Paste here some corresponding code and type the language name you want to create/update. This endpoint will update the main classifier for uu. Please note that the current and updated classifier, your source ip and the document/language you paste are logged. Be careful :D
+  %form{:class=>'well', :method => 'POST', :action => '/learn'}
+    .row
+      .span10
+        %textarea{:name=>'code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10', :enabled => 'false'}= h @code
+      .span2
+        %input{:type=>'text', :class => 'input-xlarge'}= h @language
+    .row
+      .span12
+        %input{:type=>'submit'}
+  %hr
+
+  %div= haml :footer
