@@ -1,12 +1,42 @@
 :javascript
+  var linguist = #{ (@scores || []).map {|s| s.first.name.downcase}.to_json};
+  var hljs_languages;
+
+  function changeToLink(lang) {
+    return '<a href="#'+lang+'" onclick="changeTo(\''+lang +'\');">'+lang+'</a>';
+  }
+
+
   $(document).ready(function() {
-    $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
+    hljs_languages = Object.keys(hljs.LANGUAGES);
+    var elt = $("#code")[0];
+    hljs.highlightBlock(elt);
+    var detected = $(elt).attr('class');
+    $('#hljs_detected').text(detected);
+    
+    $('.change_to').replaceWith(function() {
+      var lang = $.trim($(this).text());
+      return changeToLink(lang);
+    });
+
+    $('#placeholder').replaceWith(function() {
+      var o ='';
+      for(i=0; i < hljs_languages.length; i++) {
+        if(hljs_languages[i] == detected)
+        {
+          continue;
+        }
+        o = o + changeToLink(hljs_languages[i]) +" ";
+      }
+      return o
+    });
+  
   });
   function changeTo(lang) {
-    $('pre code').each(function(i, e) {
-    $(e).css('class', lang);
-    hljs.highlightBlock(e)});
-
+    $('#code').replaceWith(function() {
+      return "<code id='code' class='"+lang+"'>"+$('#spare').text()+"</code>";
+    });
+    hljs.highlightBlock($('#code')[0]);
   }
 .container
   .row
@@ -19,21 +49,23 @@
         %form{:class=>'well', :method => 'POST', :action => '/'}
           %textarea{:name=>'code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10'}= h @code
           %br
-          %input{:type=>'submit', :id => 'code', :class => 'btn btn-primary'}
+          %input#code{:type=>'submit', :class => 'btn btn-primary'}
     - else
-      .span2
-        = partial :language_select, locals: {'pos' => 0, 'language' => @scores[0][0].name, 'endpoint' => "set/as/#{@scores[0][0].name}", 'extra_class' => 'well' }
+      .span2 
+        #{ "Oy" }, I've hilighted this as 
+        %span.change_to#hljs_detected
+        or 
+        %span.change_to=@scores[0][0].name.downcase
+        \.
+        We can also try all these color syntax:
+        %span#placeholder (if you don't see anything here, you should enable javascript on your browser :D)
+        \.
       .span10
         %p
           %pre
-            %code{:class => @scores[0][0].name }= h @code
-            %button{:class => 'btn btn-primary', :onclick => 'changeTo("glsl");'} Change to GLSL
-      .row
-        .span2 You can also select another syntax here if you feel this one is not fit.
-        .span6 &nbsp; 
-        - @scores[1..2].each_with_index do |sc, pos|
-          .span2
-            = partial :language_select, locals: {'pos' => pos, 'language' => sc[0].name, 'endpoint' => "set/as/#{sc[0].name}", 'extra_class' => ''}
+            %code#code= h @code
+      %pre{:style => 'display:none;'}
+        %code#spare= h(h(@code))
   %hr
 
   %div= haml :footer
