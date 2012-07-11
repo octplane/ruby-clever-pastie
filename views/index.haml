@@ -1,5 +1,5 @@
 :javascript
-  var linguist = #{ (@scores || []).map {|s| s.first.name.downcase}.to_json};
+  var linguist = #{ (@scores || []).map {|s| s.first.downcase}.to_json};
   var hljs_languages;
 
   function changeToLink(lang) {
@@ -44,7 +44,7 @@
       .span2
         %p Copie Privée is a new kind of paste website. It will try to auto-detect the language you're pasting.
         - if @scores && @scores.length >0
-          %p It looks like this is #{@scores.first.first.name} (#{"%2.02f" % @scores.first[1]}) (or maybe #{@scores[1].first.name}, #{"%2.02f" % @scores[1][1]} or even  #{@scores[2].first.name}, #{"%2.02f" % @scores[2][1]}...).
+          %p It looks like this is #{@scores[0].first} (#{"%2.02f" % @scores.first[1]}) (or maybe #{@scores[1].first}, #{"%2.02f" % @scores[1][1]} or even  #{@scores[2].first}, #{"%2.02f" % @scores[2][1]}...).
       .span10
         %form{:class=>'well', :method => 'POST', :action => '/'}
           %textarea{:name=>'code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10'}= h @code
@@ -55,7 +55,7 @@
         #{ "Oy" }, I've hilighted this as 
         %span.change_to#hljs_detected
         or 
-        %span.change_to=@scores[0][0].name.downcase
+        %span.change_to=@scores[0][0].downcase
         \.
         We can also try all these color syntax:
         %span#placeholder (if you don't see anything here, you should enable javascript on your browser :D)
