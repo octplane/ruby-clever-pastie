@@ -42,6 +42,7 @@ end
 
 get '/' do
   @code = ''
+  @snippet = "Copie Priv&eacute;e is a new kind of paste website. It will try to auto-detect the language you're pasting."
   haml :index
 end
 

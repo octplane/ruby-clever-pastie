@@ -39,17 +39,37 @@
     hljs.highlightBlock($('#code')[0]);
   }
 .container
+  %form.well.form-inline{ :method => 'POST', :action => '/'}
+    %row
+      %button.btn.btn-mini.btn-danger
+        %i.icon-file.icon-white
+        Save 
+      %button.btn.btn-mini.btn-primary.disabled
+        %i.icon-lock.icon-white
+        Encrypt
+      Expire
+      %select.span3
+        %option 5 Minutes
+        %option 30 Minutes
+        %option 1 hour
+        %option 1 day
+        %option 1 week
+        %option 1 year
+        %option never
+      %label.checkbox
+        %input{:type=>"checkbox"} Browsable
+
+
+
   .row
     - if @code == ""
       .span2
-        %p Copie Privée is a new kind of paste website. It will try to auto-detect the language you're pasting.
         - if @scores && @scores.length >0
           %p It looks like this is #{@scores[0].first} (#{"%2.02f" % @scores.first[1]}) (or maybe #{@scores[1].first}, #{"%2.02f" % @scores[1][1]} or even  #{@scores[2].first}, #{"%2.02f" % @scores[2][1]}...).
       .span10
-        %form{:class=>'well', :method => 'POST', :action => '/'}
-          %textarea{:name=>'code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10'}= h @code
-          %br
-          %input#code{:type=>'submit', :class => 'btn btn-primary'}
+        %textarea{:name=>'code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10'}= h @code
+        %br
+        %input#code{:type=>'submit', :class => 'btn btn-primary'}
     - else
       .span2 
         #{ "Oy" }, I've hilighted this as 

@@ -7,3 +7,5 @@ Integrate Linguist gem
 - Use #anchor to decrypt
 
 
+- install libicu-dev is required
+
