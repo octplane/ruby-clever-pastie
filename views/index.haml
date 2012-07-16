@@ -38,17 +38,26 @@
     });
     hljs.highlightBlock($('#code')[0]);
   }
-.container
-  %form.well.form-inline{ :method => 'POST', :action => '/'}
-    %row
-      %button.btn.btn-mini.btn-danger
+.main
+  - if @scores && @scores.length >0
+    #{ "Oy" }, I've hilighted this as 
+    %span.change_to#hljs_detected
+    (linguist says it's 
+    %span.change_to=@scores[0][0].downcase
+    and I don't care for now)
+    -# \. It looks like this is #{@scores[0].first} (#{"%2.02f" % @scores.first[1]}) (or maybe #{@scores[1].first}, #{"%2.02f" % @scores[1][1]} or even  #{@scores[2].first}, #{"%2.02f" % @scores[2][1]}...).
+    %div
+      %div#placeholder (if you don't see anything here, you should enable javascript on your browser :D)
+  - if @code == ""
+    %form.form-inline{ :method => 'POST', :action => '/'}
+      %button.btn.btn-mini.btn-danger{ :type => 'submit' }
         %i.icon-file.icon-white
         Save 
       %button.btn.btn-mini.btn-primary.disabled
         %i.icon-lock.icon-white
         Encrypt
       Expire
-      %select.span3
+      %select.span3.disabled
         %option 5 Minutes
         %option 30 Minutes
         %option 1 hour
@@ -57,33 +66,14 @@
         %option 1 year
         %option never
       %label.checkbox
-        %input{:type=>"checkbox"} Browsable
-
-
-
-  .row
-    - if @code == ""
-      .span2
-        - if @scores && @scores.length >0
-          %p It looks like this is #{@scores[0].first} (#{"%2.02f" % @scores.first[1]}) (or maybe #{@scores[1].first}, #{"%2.02f" % @scores[1][1]} or even  #{@scores[2].first}, #{"%2.02f" % @scores[2][1]}...).
-      .span10
-        %textarea{:name=>'code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10'}= h @code
-        %br
-        %input#code{:type=>'submit', :class => 'btn btn-primary'}
-    - else
-      .span2 
-        #{ "Oy" }, I've hilighted this as 
-        %span.change_to#hljs_detected
-        or 
-        %span.change_to=@scores[0][0].downcase
-        \.
-        We can also try all these color syntax:
-        %span#placeholder (if you don't see anything here, you should enable javascript on your browser :D)
-        \.
-      .span10
-        %p
-          %pre
-            %code#code= h @code
+        %input.disabled{:type=>"checkbox"} Browsable
+      .row
+        .span12
+          %textarea{:name => 'code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10'}= h @code
+  - else
+    .span12
+      %pre
+        %code#code= h @code
       %pre{:style => 'display:none;'}
         %code#spare= h(h(@code))
   %hr
