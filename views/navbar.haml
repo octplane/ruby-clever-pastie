@@ -1,16 +1,8 @@
-.navbar.navbar-fixed-top
-  .navbar-inner
-    .container
-      %a.btn.btn-navbar{ "data-toggle".to_sym => "collapse", "data-target".to_sym => ".nav-collapse"}
-        %span.icon-bar
-        %span.icon-bar
-        %span.icon-bar
-      %a.brand{:href => '/'} Copie Privée
-      .nav-collapse
-        %ul.nav
-          %li
-            %a{:href => '/about'}A propos
-          %li
-            %a{:href => '/contact'}Contact
-          %li.navbar-text
-            %i= @snippet
+.navbar
+  %a.brand{:href => '/'} Copie Privée
+  |
+  %a{:href => '/about'}A propos
+  |
+  %a{:href => '/contact'}Contact
+  |
+  %i= @snippet

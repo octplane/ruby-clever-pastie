@@ -1,52 +1,15 @@
 :javascript
   var linguist = #{ (@scores || []).map {|s| s.first.downcase}.to_json};
-  var hljs_languages;
-
-  function changeToLink(lang) {
-    return '<a href="#'+lang+'" onclick="changeTo(\''+lang +'\');">'+lang+'</a>';
-  }
-
-
-  $(document).ready(function() {
-    hljs_languages = Object.keys(hljs.LANGUAGES);
-    var elt = $("#code")[0];
-    hljs.highlightBlock(elt);
-    var detected = $(elt).attr('class');
-    $('#hljs_detected').text(detected);
-    
-    $('.change_to').replaceWith(function() {
-      var lang = $.trim($(this).text());
-      return changeToLink(lang);
-    });
-
-    $('#placeholder').replaceWith(function() {
-      var o ='';
-      for(i=0; i < hljs_languages.length; i++) {
-        if(hljs_languages[i] == detected)
-        {
-          continue;
-        }
-        o = o + changeToLink(hljs_languages[i]) +" ";
-      }
-      return o
-    });
-  
-  });
-  function changeTo(lang) {
-    $('#code').replaceWith(function() {
-      return "<code id='code' class='"+lang+"'>"+$('#spare').text()+"</code>";
-    });
-    hljs.highlightBlock($('#code')[0]);
-  }
-.main
+.row
   - if @scores && @scores.length >0
-    #{ "Oy" }, I've hilighted this as 
+    Hilighted this as 
     %span.change_to#hljs_detected
     (linguist says it's 
     %span.change_to=@scores[0][0].downcase
     and I don't care for now)
     -# \. It looks like this is #{@scores[0].first} (#{"%2.02f" % @scores.first[1]}) (or maybe #{@scores[1].first}, #{"%2.02f" % @scores[1][1]} or even  #{@scores[2].first}, #{"%2.02f" % @scores[2][1]}...).
     %div
+      Switch highlight to 
       %div#placeholder (if you don't see anything here, you should enable javascript on your browser :D)
   - if @code == ""
     %form.form-inline{ :method => 'POST', :action => '/'}
