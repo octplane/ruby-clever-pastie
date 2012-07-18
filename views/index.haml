@@ -2,9 +2,9 @@
   var linguist = #{ (@scores || []).map {|s| s.first.downcase}.to_json};
 - if @code == ""
   %form.form-inline{ :method => 'POST', :action => '/'}
-    %button.btn.btn-mini.btn-danger{ :type => 'submit' }
+    %button.btn.btn-mini.btn-primary{ :type => 'submit' }
       %i.icon-file.icon-white
-      Save 
+      Gluu
     / %button.btn.btn-mini.btn-primary.disabled
     /   %i.icon-lock.icon-white
     /   Encrypt
