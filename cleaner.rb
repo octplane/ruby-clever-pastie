@@ -12,10 +12,13 @@ Dir.new(DATA_FOLDER).each do |f|
   next if ! File.file?(c)
   ex = YAML::load(File.open(c, 'r'))['expire'] || 0
 
-  if ex - Time.now.to_i < 0
-    m = true
-    puts "Deleting #{c}"
-    File.unlink(c)
+
+  if ex != -1
+    if ex - Time.now.to_i < 0
+      m = true
+      puts "Deleting #{c}"
+      File.unlink(c)
+    end
   end
 end
 
