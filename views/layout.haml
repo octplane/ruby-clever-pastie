@@ -6,13 +6,18 @@
     %meta{:name => "author", :content => ""}
     %style
       :plain
-        body { margin: 0px; font-family: Helvetica;}
-    %link{ :href => "/hi/styles/solarized_light.css", :type => "text/css", :rel => "stylesheet" }  
+        body { padding-top: 60px;
+          padding-bottom: 40px;
+        }
+    %link{ :href => "/css/bootstrap.min.css", :type => "text/css", :rel => "stylesheet" }  
+
+    %link#css{ :href => "/hi/styles/solarized_light.css", :type => "text/css", :rel => "stylesheet" }  
   
   %body
 
-    %div.navbar.navbar-fixed-top= haml :navbar
-    %div.container{:style => 'margin-top: 20px;'}= yield
+    %div= haml :navbar
+    %div
+      %div.container= yield
     / Placed at the end of the document so the pages load faster
     %script{ :type => "text/javascript", :src =>"/scripts/jquery-1.6.1.min.js"}
     %script{ :type => "text/javascript", :src =>"/js/uu.js"}
