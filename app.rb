@@ -125,6 +125,10 @@ get '/v/:id' do
   
   id = Rufus::Mnemo.to_i(mnemo)
 
+  if !File.exists?(File.join(DATA_FOLDER, id.to_s))
+    raise Sinatra::NotFound
+  end
+
   data = YAML::load(File.open(File.join(DATA_FOLDER, id.to_s), 'r'))
   @code = data['content']
   @scores = data['scores']
