@@ -25,10 +25,10 @@ function styleToLink(style) {
 }
 
 
-var hljs_styles = ['arta', 'ascetic', 'brown_paper', 'dark', 'default', 'far',
-  'github', 'googlecode', 'idea', 'ir_black', 'magula', 'monokai', 'pojoaque',
-  'school_book','solarized_dark', 'solarized_light', 'sunburst', 'vs',
-  'xcode', 'zenburn' ];
+var hljs_styles = ['arta.dark', 'ascetic', 'brown_paper', 'dark.dark', 'default', 'far',
+  'github', 'googlecode', 'idea', 'ir_black.dark', 'magula', 'monokai.dark', 'pojoaque.dark',
+  'school_book','solarized_dark.dark', 'solarized_light', 'sunburst.dark', 'vs',
+  'xcode', 'zenburn.dark' ];
 
 $(document).ready(function() {
   p = window.location.hash.substr(1).split("&");
@@ -51,7 +51,7 @@ $(document).ready(function() {
   if(parms['style']) {
     loadStyle(parms['style']);
   } else {
-    loadStyle('solarized_light');
+    silentLoadStyle('solarized_light');
   }
 
   hljs_languages = Object.keys(hljs.LANGUAGES);
@@ -89,17 +89,42 @@ $(document).ready(function() {
 });
 
 function loadStyle(style) {
+  silentLoadStyle(style);
+  updateHash();
+}
+function silentLoadStyle(style) {
+
+  var taint = "";
+  var syntax_style;
+
+  if(style.indexOf(".") > 0) {
+    var sts = style.split(".")
+    syntax_style = sts[0];
+    taint = sts[1];
+  } else {
+    syntax_style = style;
+  }
+
+  loadCssAtIdentifier("/hi/styles/" + syntax_style, 'hiStyle');
+  if(taint != "") {
+    loadCssAtIdentifier("/css/" + taint, 'taint');
+  } else {
+	$("#taint").remove();
+  }
+  cur_style = style;
+}
+
+function loadCssAtIdentifier(cssName, identifier)
+{
   var link = $("<link>");
 
-  link.attr({ id:'hiStyle',
+  link.attr({ id: identifier,
           type: 'text/css',
           rel: 'stylesheet',
-          href: '/hi/styles/'+style+'.css'
+          href: cssName +'.css'
   });
-  $("#hiStyle").remove();
+  $("#" + identifier).remove();
   $("head").append( link ); 
-  cur_style = style;
-  updateHash();
 }
 
 function changeTo(lang) {
