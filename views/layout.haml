@@ -4,6 +4,7 @@
     %title Copie Privee
     %meta{:name => "description", :content => ""}
     %meta{:name => "author", :content => ""}
+    %link{ :href => "/css/bootstrap.min.css", :type => "text/css", :rel => "stylesheet" }
     %style
       :plain
         body { padding-top: 60px;
@@ -12,9 +13,7 @@
         .clickable {
           cursor: hand;
         }
-    %link{ :href => "/css/bootstrap.min.css", :type => "text/css", :rel => "stylesheet" }
   %body
-
     %div= haml :navbar
     %div
       %div.container= yield
