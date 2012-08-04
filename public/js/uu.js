@@ -23,7 +23,18 @@ function changeToLink(lang) {
 function styleToLink(style) {
   return '<a class="clickable" onclick="loadStyle(\''+style +'\');">'+style+'</a>';
 }
-
+function generatePassword(length) {
+  var pass=Math.abs(sjcl.random.randomWords(1)[0]);
+  var p = "";
+  while(p.length < length) {
+    p = p + String.fromCharCode(97 + (pass % 26));
+    pass = pass / 26;
+    if(pass < 1) {
+      pass = Math.abs(sjcl.random.randomWords(1)[0]);
+    }
+  }
+  return p;
+}
 
 var hljs_styles = ['arta.dark', 'ascetic', 'brown_paper', 'dark.dark', 'default', 'far',
   'github', 'googlecode', 'idea', 'ir_black.dark', 'magula', 'monokai.dark', 'pojoaque.dark',
@@ -44,7 +55,8 @@ $(document).ready(function() {
     cur_lang = detected;
     $('#hljs_lang').text(detected);
   }
-  
+  console.log(generatePassword(16));
+
   if(parms['lang']) {
     changeTo(parms['lang']);
   }
