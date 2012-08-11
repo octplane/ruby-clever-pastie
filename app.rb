@@ -2,7 +2,6 @@
 require 'sinatra'
 require 'sinatra/partial'
 require 'haml'
-require 'linguist'
 require 'cgi'
 require 'pp'
 require 'json'
@@ -19,13 +18,6 @@ def get_counter(iteration)
     rand(100_000)
   else
     iteration + 1
-  end
-end
-
-module Linguist
-  # Language bayesian classifier.
-  class Classifier
-    attr_reader :languages
   end
 end
 
@@ -95,10 +87,7 @@ post '/' do
     expire = -1
   end
 
-  classifier = Linguist::Classifier.instance
-  @scores = classifier.classify(@code).map { |s| [s[0].name, s[1]] }
-  data = { 'content' => @code, 'scores' => @scores, 'expire' => expire }
-  ext = @scores.first.first.downcase
+  data = { 'content' => @code,  'expire' => expire }
 
   count = get_counter(0)
 
@@ -120,7 +109,7 @@ get '/v/:id' do
   if params[:id].include?('.')
     mnemo, ext = params[:id].split(/\./)
   else
-    mnemo =params[:id]
+    mnemo = params[:id]
   end
   
   id = Rufus::Mnemo.to_i(mnemo)
