@@ -69,6 +69,11 @@ def expiry_delay_to_ts(expiry_delay)
   when '5 '
   end
 end
+
+get '/about' do
+	haml :about
+end
+
 get '/' do
   @code = ''
   @snippet = "Copie Priv&eacute;e is a new kind of paste website. It will try to auto-detect the language you're pasting."

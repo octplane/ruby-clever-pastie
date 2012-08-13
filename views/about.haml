@@ -1,0 +1,15 @@
+%h1 About
+
+UU was born out of the need to have a simple paste tool that automaticaly syntax highlight its content.
+
+%h1 But this is not really a secure tool !
+
+Not Really. It will locally encrypt the data using the provided key in the url but there is absolutely no
+warranty somebody is not going to play the Man in the Middle to get the key and your pasted content. Encryption
+is only performed to ensure that accessing the server's disk will not provide your paste content. To some extent.
+%a{ :href=>"http://www.matasano.com/articles/javascript-cryptography/"}
+	Some material
+about security in the browser.
+
+%hr
+%div= haml :footer
