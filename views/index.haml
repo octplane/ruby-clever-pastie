@@ -1,7 +1,7 @@
 :javascript
   var linguist = #{ (@scores || []).map {|s| s.first.downcase}.to_json};
 - if @code == ""
-  %form.form-inline{ :method => 'POST', :action => '/'}
+  %form.form-inline{ :id => "gluu_form", :method => 'POST', :action => '/'}
     %button.btn.btn-primary{ :type => 'submit' }
       %i.icon-file.icon-white
       Gluu
@@ -19,7 +19,7 @@
     /   %input.disabled{:type=>"checkbox"} Browsable
     .row
       .span12
-        %textarea{:name => 'code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10'}= h @code
+        %textarea{:id => 'clear_code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10'}= h @code
 - else
   .row
     .span12
@@ -30,17 +30,16 @@
         expire on #{@expire}
       and is highlighted as 
       %span.change_to#hljs_lang
-      - if @scores && @scores.length >0
-        / (linguist says it's 
-        / %span.change_to=@scores[0][0].downcase
-        / and I don't care for now)
-        -# \. It looks like this is #{@scores[0].first} (#{"%2.02f" % @scores.first[1]}) (or maybe #{@scores[1].first}, #{"%2.02f" % @scores[1][1]} or even  #{@scores[2].first}, #{"%2.02f" % @scores[2][1]}...).
   .row
     .span12
       %pre
-        %code#code= h @code
+        - if @code != nil
+          %code#code= h @code
+        - else
+          %code#code
+          %code#encrypted_code= h @encrypted_content
       %pre{:style => 'display:none;'}
-        %code#spare= h(h(@code))
+        %code#spare
   .row
     .span12
       Switch highlight to 

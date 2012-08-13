@@ -80,6 +80,34 @@ get '/' do
   haml :index
 end
 
+post '/paste' do
+  @code = params[:content]
+
+  if not params[:never_expire]
+    ts = expiries.find{ |e| e.name == params[:expiry_delay]}
+    raise "Unable to find expiry delay = #{params[:expiry_delay]}" if !ts
+    expire = ts.expire(Time.now.to_i)
+  else
+    expire = -1
+  end
+
+  data = { 'crypted_content' => @code,  'expire' => expire }
+  count = get_counter(0)
+
+  begin
+    @name = Rufus::Mnemo.from_integer(count)
+    f = File.open(File.join(DATA_FOLDER, "#{count}"), Fcntl::O_CREAT | Fcntl::O_EXCL | Fcntl::O_WRONLY)
+  rescue Errno::EEXIST
+    # next iteration
+    count = get_counter(count)
+    retry
+  end
+  data['count'] = count
+  f.puts data.to_yaml
+  f.close
+  '/v/'+@name
+end
+
 post '/' do
   @code = params[:code]
   redirect '/' if @code == ""
@@ -124,8 +152,14 @@ get '/v/:id' do
   end
 
   data = YAML::load(File.open(File.join(DATA_FOLDER, id.to_s), 'r'))
-  @code = data['content']
-  @scores = data['scores']
+
+  if data.has_key?('content')
+    @code = data['content']
+  elsif data.has_key?('crypted_content')
+    @encrypted_content = data['crypted_content']
+    @code = nil
+  end
+
   @expire = data['expire']
   if @expire == -1
     @never = true

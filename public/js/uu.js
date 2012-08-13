@@ -55,7 +55,6 @@ $(document).ready(function() {
     cur_lang = detected;
     $('#hljs_lang').text(detected);
   }
-  console.log(generatePassword(16));
 
   if(parms['lang']) {
     changeTo(parms['lang']);
@@ -98,10 +97,38 @@ $(document).ready(function() {
     }
   });
 
+  $("#gluu_form").submit(function () {
+    var data = $("#clear_code").val();
+    var password = generatePassword(16);
+    encrypted = sjcl.encrypt(password, data);
+
+    sent_data = { content: encrypted };
+
+    var expiry;
+    if($('#never_expire').is(':checked')) {
+      sent_data['never_expire'] = true;
+    } else {
+      sent_data['expiry_delay'] = $('#expiry_delay').val();
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "/paste",
+      data: sent_data
+    }).done(function( dest_url ) {
+      document.location.href = dest_url + "#clef="+password;
+    }).fail(function(jqXHR, textStatus) {
+      console.log( "Request failed: " + textStatus );
+    });
+
+    return false;
+
+  });
+
 });
 
 function loadStyle(style) {
-  silentLoadStyle(style);
+  silentLoadStyle(style);decrypt
   updateHash();
 }
 function silentLoadStyle(style) {
