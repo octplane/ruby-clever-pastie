@@ -1,5 +1,5 @@
 :javascript
-  var linguist = #{ (@scores || []).map {|s| s.first.downcase}.to_json};
+  var encrypted = false;
 - if @code == ""
   %form.form-inline{ :id => "gluu_form", :method => 'POST', :action => '/'}
     %button.btn.btn-primary{ :type => 'submit' }
@@ -37,7 +37,9 @@
           %code#code= h @code
         - else
           %code#code
-          %code#encrypted_code= h @encrypted_content
+          %code#encrypted= h @encrypted_content
+          :javascript
+            var encrypted = true;
       %pre{:style => 'display:none;'}
         %code#spare
   .row
