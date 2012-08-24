@@ -108,36 +108,6 @@ post '/paste' do
   '/v/'+@name
 end
 
-post '/' do
-  @code = params[:code]
-  redirect '/' if @code == ""
-
-  if not params[:never_expire]
-    ts = expiries.find{ |e| e.name == params[:expiry_delay]}
-    raise "Unable to find expiry delay = #{params[:expiry_delay]}" if !ts
-    expire = ts.expire(Time.now.to_i)
-  else
-    expire = -1
-  end
-
-  data = { 'content' => @code,  'expire' => expire }
-
-  count = get_counter(0)
-
-  begin
-    @name = Rufus::Mnemo.from_integer(count)
-    f = File.open(File.join(DATA_FOLDER, "#{count}"), Fcntl::O_CREAT | Fcntl::O_EXCL | Fcntl::O_WRONLY)
-  rescue Errno::EEXIST
-    # next iteration
-    count = get_counter(count)
-    retry
-  end
-  data['count'] = count
-  f.puts data.to_yaml
-  f.close
-  redirect '/v/'+@name
-end
-
 get '/v/:id' do
   if params[:id].include?('.')
     mnemo, ext = params[:id].split(/\./)

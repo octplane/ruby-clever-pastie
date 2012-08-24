@@ -79,12 +79,25 @@ function wakeUp() {
 
 
 }
+function RNGisReady() {
+  $('#gl-but').removeAttr("disabled");
+  $('#gl-text').text("");
+}
 
 if(encrypted) {
   $(document).ready(function() {wakeUp()});
 }
 
 $(document).ready(function() {
+  sjcl.random.startCollectors();
+  
+  if(sjcl.random.isReady()) {
+    RNGisReady();
+  } else {
+    sjcl.random.addEventListener("seeded", function(){
+      RNGisReady();
+    });
+  }
 
   hljs_languages = Object.keys(hljs.LANGUAGES);
   $('#placeholder').replaceWith(function() {
@@ -120,7 +133,13 @@ $(document).ready(function() {
 
   $("#gluu_form").submit(function () {
     var data = $("#clear_code").val();
+    if(!sjcl.random.isReady())
+    {
+      alert("RNG not ready, move you mouse a bit and try again.");
+      return false;
+    }
     var password = generatePassword(16);
+
     encrypted = sjcl.encrypt(password, data);
 
     sent_data = { content: encrypted };
