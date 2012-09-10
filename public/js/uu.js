@@ -227,7 +227,9 @@ function setPasteto(content, lang) {
     langClass = "class='"+lang+"'";
   }
   $('#code').replaceWith(function() {
-    return "<code id='code' "+langClass+">"+content+"</code>";
+    var c = $("<code id='code' "+langClass+"></code>");
+    c.text(content);
+    return c;
   });
   hljs.highlightBlock($('#code')[0]);
 
