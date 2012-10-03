@@ -9,6 +9,7 @@ require 'fileutils'
 require 'yaml'
 require 'rufus/mnemo'
 require 'fcntl'
+require 'mongo'
 
 DATA_FOLDER = File.join(File.dirname(__FILE__), 'data')
 FileUtils.mkdir_p(DATA_FOLDER)
@@ -64,6 +65,20 @@ helpers do
   end
 end
 
+def paste_db
+  @paste_db ||= begin
+    url = JSON.parse(ENV['VCAP_SERVICES'])['mongodb-1.8'].first["credentials"]["url"]
+    cnx = Mongo::Connection.from_uri(url)['paste']
+    cnx['pastes']
+  end
+end
+ 
+def fetch_doc(id)
+ paste_db.find_one({"_id" => id })
+end
+
+
+
 def expiry_delay_to_ts(expiry_delay)
   case expiry_delay
   when '5 '
@@ -94,17 +109,17 @@ post '/paste' do
   data = { 'crypted_content' => @code,  'expire' => expire }
   count = get_counter(0)
 
-  begin
+  #begin
     @name = Rufus::Mnemo.from_integer(count)
-    f = File.open(File.join(DATA_FOLDER, "#{count}"), Fcntl::O_CREAT | Fcntl::O_EXCL | Fcntl::O_WRONLY)
-  rescue Errno::EEXIST
-    # next iteration
-    count = get_counter(count)
-    retry
-  end
-  data['count'] = count
-  f.puts data.to_yaml
-  f.close
+    data['count'] = count
+    data['_id'] = @name
+    paste_db.insert(data, :safe => true)
+#  rescue Exception => e
+#    puts e.inspect
+#    # next iteration
+#    count = get_counter(count)
+#    retry
+#  end
   '/v/'+@name
 end
 
@@ -115,13 +130,11 @@ get '/v/:id' do
     mnemo = params[:id]
   end
   
-  id = Rufus::Mnemo.to_i(mnemo)
-
-  if !File.exists?(File.join(DATA_FOLDER, id.to_s))
+#  id = Rufus::Mnemo.to_i(mnemo)
+  data = fetch_doc(mnemo)
+  if data == nil
     raise Sinatra::NotFound
   end
-
-  data = YAML::load(File.open(File.join(DATA_FOLDER, id.to_s), 'r'))
 
   if data.has_key?('content')
     @code = data['content']
@@ -140,4 +153,9 @@ get '/v/:id' do
   end
 
   haml :index
+end
+
+
+get '/env' do
+    url = JSON.parse(ENV['VCAP_SERVICES'])['mongodb-1.8'].first["credentials"]["url"]
 end
