@@ -77,6 +77,9 @@ def fetch_doc(id)
  paste_db.find_one({"_id" => id })
 end
 
+def cleanup
+  paste_db.remove({'expire' => { '$lte' => Time.now.to_i}})
+end
 
 
 def expiry_delay_to_ts(expiry_delay)
@@ -129,8 +132,7 @@ get '/v/:id' do
   else
     mnemo = params[:id]
   end
-  
-#  id = Rufus::Mnemo.to_i(mnemo)
+  cleanup
   data = fetch_doc(mnemo)
   if data == nil
     raise Sinatra::NotFound
@@ -155,7 +157,11 @@ get '/v/:id' do
   haml :index
 end
 
+ADMIN_PREFIX = "/admin/" + ENV['ADMIN_TOKEN'] + '/'
 
-get '/env' do
+get ADMIN_PREFIX+'list' do
+  paste_db.find().to_a.join("<br>")+ "<br><br>"
+end
+get ADMIN_PREFIX + '/env' do
     url = JSON.parse(ENV['VCAP_SERVICES'])['mongodb-1.8'].first["credentials"]["url"]
 end
