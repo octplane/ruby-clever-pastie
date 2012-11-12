@@ -26,6 +26,7 @@ Python profiler results ("profile"):
   keyword          column header
   function         function name in an entry (including parentheses)
   title            actual name of a function in an entry (excluding parentheses)
+  prompt           interpreter prompt (>>> or ...)
 
 Ruby ("ruby"):
 
@@ -39,7 +40,6 @@ Ruby ("ruby"):
   title            name of a function or a class inside a header
   parent           name of a parent class
   symbol           symbol
-  instancevar      instance variable
 
 Perl ("perl"):
 
@@ -69,7 +69,7 @@ Scala ("scala"):
   number           number
   string           string
   comment          comment
-  annotaion        annotation
+  annotation       annotation
   javadoc          javadoc comment
   javadoctag       @-tag in javadoc
   class            class header
@@ -86,27 +86,19 @@ Go language ("go"):
   typename         built-in plain types (int, string etc.)
   built_in         built-in functions
 
-XML ("xml"):
+HTML, XML ("xml"):
 
   tag              any tag from "<" till ">"
-  comment          comment
-  pi               processing instruction (<? ... ?>)
-  cdata            CDATA section
-  attribute        attribute
-  value            attribute's value
-
-HTML ("html"):
-
-  keyword          HTML tag
-  tag              any tag from "<" till ">"
-  comment          comment
-  doctype          <!DOCTYPE ... > declaration
   attribute        tag's attribute with or without value
   value            attribute's value
+  comment          comment
+  pi               processing instruction (<? ... ?>)
+  doctype          <!DOCTYPE ... > declaration
+  cdata            CDATA section
 
 CSS ("css"):
 
-  tag              HTML tag in selectors
+  tag              tag in selectors
   id               #some_name in selectors
   class            .some_name in selectors
   at_rule          @-rule till first "{" or ";"
@@ -114,14 +106,13 @@ CSS ("css"):
   pseudo           pseudo classes and elemens (:after, ::after etc.)
   comment          comment
   rules            everything from "{" till "}"
-  property         property name inside a rule
+  attribute        property name inside a rule
   value            property value inside a rule, from ":" till ";" or
                    till the end of rule block
   number           number within a value
   string           string within a value
   hexcolor         hex color (#FFFFFF) within a value
   function         CSS function within a value
-  params           everything between "(" and ")" within a function
   important        "!important" symbol
 
 Markdown ("markdown"):
@@ -179,8 +170,10 @@ CoffeeScript ("coffeescript"):
   string           string
   regexp           regular expression
   function         header of a function
+  class            header of a class
   title            name of a function variable inside a header
   params           parentheses and everything inside them in a function's header
+  property         @-property within class and functions
 
 ActionScript ("actionscript"):
 
@@ -358,6 +351,16 @@ Lisp ("lisp"):
   body             remainder of the non-quoted list
   quoted           quoted list, both "(quote .. )" and "'(..)"
 
+Clojure ("clojure"):
+
+  comment          comments and hints
+  string           string
+  number           number
+  collection       collections
+  attribute        :keyword
+  title            function name (built-in or user defined)
+  built_in         built-in function name
+
 Ini ("ini"):
 
   title            title of a section
@@ -524,6 +527,8 @@ Matlab ("matlab"):
   title            function name
   function         function
   param            params of function
+  matrix           matrix in [ .. ]
+  cell             cell in { .. }
 
 R ("r"):
 
@@ -542,3 +547,22 @@ OpenGL Shading Language ("glsl"):
   keyword          keyword
   built_in         GLSL built-in functions and variables
   literal          true false
+
+AppleScript ("applescript"):
+
+  keyword          keyword
+  command          core AppleScript command
+  constant         AppleScript built in constant
+  type             AppleScript variable type (integer, etc.)
+  property         Applescript built in property (length, etc.)
+  number           number
+  string           string
+  comment          comment
+  title            name of a handler
+
+Brainfuck ("brainfuck"):
+
+  title            Brainfuck while loop command
+  literal          Brainfuck inc and dec commands
+  comment          comment
+  string           Brainfuck input and output commands
