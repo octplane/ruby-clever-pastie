@@ -228,6 +228,10 @@ function setPasteto(content, lang) {
   }
   $('#code').replaceWith(function() {
     var c = $("<code id='code' "+langClass+"></code>");
+    var lines = content.split(/\n/);
+    for(var i=0; i < lines.length && i < 50; i++) {
+      console.log(lines[i].length);
+    }
     c.text(content);
     return c;
   });

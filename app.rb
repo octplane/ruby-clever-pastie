@@ -65,22 +65,39 @@ helpers do
   end
 end
 
-def paste_db
-  @paste_db ||= begin
-    url = JSON.parse(ENV['VCAP_SERVICES'])['mongodb-1.8'].first["credentials"]["url"]
-    cnx = Mongo::Connection.from_uri(url)['paste']
-    cnx['pastes']
+if ENV['VCAP_SERVICES']
+
+  def paste_db
+    @paste_db ||= begin
+      url = JSON.parse(ENV['VCAP_SERVICES'])['mongodb-1.8'].first["credentials"]["url"]
+      cnx = Mongo::Connection.from_uri(url)['paste']
+      cnx['pastes']
+    end
+  end
+
+  def fetch_doc(id)
+   paste_db.find_one({"_id" => id })
+  end
+
+  def save_doc(data)
+    paste_db.insert(data, :safe => true)
+  end
+
+  def cleanup
+    paste_db.remove({'expire' => { '$lte' => Time.now.to_i}})
+  end
+
+else
+  def fetch_doc(id)
+    return YAML::load( File.open(File.join(DATA_FOLDER, "#{id}.yaml") ) )
+  end
+  def save_doc(data)
+    File.open(File.join(DATA_FOLDER, "#{data['_id']}.yaml"), "wb") {|file| file.puts(data.to_yaml) }
+  end
+  def cleanup
+    # NOOP
   end
 end
- 
-def fetch_doc(id)
- paste_db.find_one({"_id" => id })
-end
-
-def cleanup
-  paste_db.remove({'expire' => { '$lte' => Time.now.to_i}})
-end
-
 
 def expiry_delay_to_ts(expiry_delay)
   case expiry_delay
@@ -116,7 +133,7 @@ post '/paste' do
     @name = Rufus::Mnemo.from_integer(count)
     data['count'] = count
     data['_id'] = @name
-    paste_db.insert(data, :safe => true)
+    save_doc(data)
 #  rescue Exception => e
 #    puts e.inspect
 #    # next iteration
@@ -157,7 +174,7 @@ get '/v/:id' do
   haml :index
 end
 
-ADMIN_PREFIX = "/admin/" + ENV['ADMIN_TOKEN'] + '/'
+ADMIN_PREFIX = "/admin/" + (ENV['ADMIN_TOKEN'] || '' ) + '/'
 
 get ADMIN_PREFIX+'list' do
   paste_db.find().to_a.join("<br>")+ "<br><br>"
