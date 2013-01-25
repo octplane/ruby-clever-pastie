@@ -5,25 +5,12 @@
     %title Copie Privee
     %meta{:name => "description", :content => ""}
     %meta{:name => "author", :content => ""}
-    %link{ :href => "/css/bootstrap.min.css", :type => "text/css", :rel => "stylesheet" }
+    %link{ :href => "/hi/styles/solarized_light.css", :type => "text/css", :rel => "stylesheet" }
+    %link{ :href => "/c.css", :type => "text/css", :rel => "stylesheet" }
+
     %style
       :plain
-        body { padding-top: 60px;
-          padding-bottom: 40px;
-        }
-        .clickable {
-          cursor: hand;
-        }
-        #encrypted {
-          display:none;
-        }
-        pre code {
-          font-size: 12px;
-          overflow: display;
-        }
-        .f {
-          width: 100%;
-        }
+
   %body
     %div= haml :navbar
     %div= yield

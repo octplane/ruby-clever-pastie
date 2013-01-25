@@ -99,10 +99,17 @@ else
   end
 end
 
-def expiry_delay_to_ts(expiry_delay)
-  case expiry_delay
-  when '5 '
+def expiry_delay_to_when(expiry_delay)
+  delta =  expiry_delay - Time.now.to_i
+  if delta > 86400
+    ndays = delta / 86400
+    return "#{ndays} days"
   end
+  if delta > 3600
+    nhours = delta / 3600
+    return "#{nhours} hours"
+  end
+  "#{delta/60} minutes"
 end
 
 get '/about' do
@@ -115,10 +122,14 @@ get '/' do
   haml :index
 end
 
+get '/c.css' do
+  scss :stylesheet
+end
+
 post '/paste' do
   @code = params[:content]
 
-  if not params[:never_expire]
+  if ! params[:never_expire]
     ts = expiries.find{ |e| e.name == params[:expiry_delay]}
     raise "Unable to find expiry delay = #{params[:expiry_delay]}" if !ts
     expire = ts.expire(Time.now.to_i)
@@ -168,7 +179,7 @@ get '/v/:id' do
     @expire = ""
   else
     @never = false
-    @expire = Time.at(@expire)
+    @expire = expiry_delay_to_when(@expire)
   end
 
   haml :index

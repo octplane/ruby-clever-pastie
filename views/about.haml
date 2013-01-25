@@ -1,15 +1,16 @@
 %div.container
   %h1 About
 
-  UU was born out of the need to have a simple paste tool that automaticaly syntax highlight its content. It stores the content of your
+  UU was born out of the need to have a simple paste tool that automatically syntax highlight its content. It stores the content of your
   paste into a mongodb. To ensure confidentiality, the data is encrypted in your browser before being sent to the server. The server never sees
   the encryption keys and thus cannot read what you pastes.
 
-  %h1 But this is not really a secure tool !
+  %h1 Is this actually a secure tool ?
 
-  %p Not Really. It will locally encrypt the data using the provided key in the url but there is absolutely no warranty somebody is not going to play the Man in the Middle to get the key and your pasted content. Encryption is only performed to ensure that accessing the server's disk will not provide your paste content.
+  %p Not Really. It will locally encrypt the data using the provided key in the url but there is absolutely no warranty
+  somebody is not going to play the Man in the Middle to get the key and your pasted content. Encryption is only performed
+  to ensure that accessing the server's data will not provide your pasted content.
   %p
     %a{ :href=>"http://www.matasano.com/articles/javascript-cryptography/"} Some material about security in the browser.
 
-  %hr
   %div= haml :footer

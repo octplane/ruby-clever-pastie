@@ -3,24 +3,18 @@
 - if @code == ""
   %div.container
     %form.form-inline{ :id => "gluu_form", :method => 'POST', :action => '/'}
-      .row
-        .span12
-          %textarea{:id => 'clear_code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10'}= h @code
-      .row
-        .span12
-          %button.btn.btn-primary#gl-but{ :type => 'submit', :disabled => true }
-            %i.icon-file.icon-white
-            Gluu
-          %span
-            Expiration
-            %label.checkbox
-              %input#never_expire{:type=>'checkbox',:name => 'never_expire'} Never
-            %select.span3#expiry_delay{:name => 'expiry_delay'}
-              - expiries.each do |ts|
-                %option{ts.html_properties}=ts.name
-          %span#gl-text I need entropy... shake your mouse !
-          / %label.checkbox
-          /   %input.disabled{:type=>"checkbox"} Browsable
+      %textarea{:id => 'clear_code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10'}= h @code
+      %button.btn.btn-primary#gl-but{ :type => 'submit', :disabled => true }
+        %i.icon-file.icon-white
+        Gluu
+      %span
+        Expiration
+        %label.checkbox
+          %input#never_expire{:type=>'checkbox',:name => 'never_expire'} Never
+        %select.span3#expiry_delay{:name => 'expiry_delay'}
+          - expiries.each do |ts|
+            %option{ts.html_properties}=ts.name
+      %span#gl-text I need entropy... shake your mouse !
 - else
   .row
     .span12
@@ -28,7 +22,7 @@
       - if @never
         never expire
       - else
-        expire on #{@expire}
+        expires in #{@expire}
       and is highlighted as 
       %span.change_to#hljs_lang
   .f
@@ -40,14 +34,8 @@
         %code#encrypted= h @encrypted_content
         :javascript
           var encrypted = true;
-    %pre{:style => 'display:none;'}
-      %code#spare
-  .row
-    .span12
-      Switch highlight to 
-      %div#placeholder (if you don't see anything here, you should enable javascript on your browser :D)
-    .span
-      Switch style to
-      %div#style-placeholder (if you don't see anything here either, your js is definitely not working :-O)
-%hr
+    Switch highlight to
+    %div#placeholder (if you don't see anything here, you should enable javascript on your browser :D)
+  %pre{:style => 'display:none;'}
+    %code#spare
 %div= haml :footer

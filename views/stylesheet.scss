@@ -1,0 +1,41 @@
+body {
+  font-family: monospace;
+  margin-top: 0px;
+}
+.top-container {
+  font-size: 0.8em;
+  position: relative;
+
+  a.brand {
+    color: red;
+  }
+
+  ul.nav {
+    display: inline;
+    li {
+      display: inline;
+    }
+
+  }
+}
+
+textarea {
+  border: 1px dashed #66cccc;
+  background-color: #fdf6e3;
+}
+
+.clickable {
+  cursor: hand;
+}
+#encrypted {
+  display:none;
+}
+
+pre code {
+  font-size: 12px;
+  overflow: display;
+  border: 1px solid #66cccc;
+}
+.f {
+  width: 100%;
+}
