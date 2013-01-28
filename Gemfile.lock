@@ -16,6 +16,7 @@ GEM
       rack
     raindrops (0.10.0)
     rufus-mnemo (1.2.3)
+    sass (3.1.17)
     shotgun (0.9)
       rack (>= 1.0)
     sinatra (1.3.3)
@@ -39,6 +40,7 @@ DEPENDENCIES
   haml
   mongo
   rufus-mnemo
+  sass
   shotgun
   sinatra
   sinatra-partial

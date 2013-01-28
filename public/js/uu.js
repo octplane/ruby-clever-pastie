@@ -66,6 +66,10 @@ function wakeUp() {
   }else {
     displayError();
   }
+  $('#reveal-but').click(revealRaw);
+  $('#code').show();
+  $('#spare').hide();
+  $('#spare').height(80*$(window).height()/100);
 
 
 }
@@ -77,6 +81,7 @@ function RNGisReady() {
 if(encrypted) {
   $(document).ready(function() {wakeUp()});
 }
+
 
 $(document).ready(function() {
   sjcl.random.startCollectors();
@@ -178,10 +183,6 @@ function setPasteto(content, lang) {
   }
   $('#code').replaceWith(function() {
     var c = $("<code id='code' "+langClass+"></code>");
-    var lines = content.split(/\n/);
-    for(var i=0; i < lines.length && i < 50; i++) {
-      console.log(lines[i].length);
-    }
     c.text(content);
     return c;
   });
@@ -200,4 +201,10 @@ function changeTo(lang) {
   cur_lang = lang;
   updateHash();
 }
+function revealRaw() {
+  $('#spare').toggle();
+  $('#code').toggle();
+  $('#spare').select();
+}
+
 

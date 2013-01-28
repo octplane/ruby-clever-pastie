@@ -25,13 +25,21 @@ textarea {
 }
 
 .clickable {
-  cursor: hand;
+  cursor: pointer;
+  text-decoration: underline;
 }
-#encrypted {
+#encrypted, #spare, .hidden{
   display:none;
 }
 
-pre code {
+#spare {
+  width: 100%;
+  font-family: monospace;
+  border: 1px solid #66cccc;
+  font-size: 12px;
+}
+
+pre code,  {
   font-size: 12px;
   overflow: display;
   border: 1px solid #66cccc;

@@ -5,7 +5,6 @@
     %form.form-inline{ :id => "gluu_form", :method => 'POST', :action => '/'}
       %textarea{:id => 'clear_code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10'}= h @code
       %button.btn.btn-primary#gl-but{ :type => 'submit', :disabled => true }
-        %i.icon-file.icon-white
         Gluu
       %span
         Expiration
@@ -31,11 +30,13 @@
         %code#code= h @code
       - else
         %code#code
-        %code#encrypted= h @encrypted_content
-        :javascript
-          var encrypted = true;
+    %textarea#spare
+    %code#encrypted= h @encrypted_content
+    %button.btn.btn-primary#reveal-but{ :type => "submit", :onclick => 'revealRaw' }
+      Raw
+    :javascript
+      var encrypted = true;
+    %br
     Switch highlight to
     %div#placeholder (if you don't see anything here, you should enable javascript on your browser :D)
-  %pre{:style => 'display:none;'}
-    %code#spare
 %div= haml :footer
