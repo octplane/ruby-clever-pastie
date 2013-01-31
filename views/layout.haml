@@ -12,8 +12,9 @@
       :plain
 
   %body
-    %div= haml :navbar
-    %div= yield
+    %div.top-container= haml :navbar
+    %div.container= yield
+    %div= haml :footer
     / Placed at the end of the document so the pages load faster
     %script{ :type => "text/javascript", :src =>"/scripts/jquery-1.6.1.min.js"}
     %script{ :type => "text/javascript", :src =>"/js/uu.js"}

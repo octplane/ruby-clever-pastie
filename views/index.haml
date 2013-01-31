@@ -1,9 +1,9 @@
 :javascript
   var encrypted = false;
 - if @code == ""
-  %div.container
-    %form.form-inline{ :id => "gluu_form", :method => 'POST', :action => '/'}
-      %textarea{:id => 'clear_code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10'}= h @code
+  %form.form-inline{ :id => "gluu_form", :method => 'POST', :action => '/'}
+    %textarea{:id => 'clear_code', :rows => '50'}= h @code
+    %span.action
       %button.btn.btn-primary#gl-but{ :type => 'submit', :disabled => true }
         Gluu
       %span
@@ -15,15 +15,13 @@
             %option{ts.html_properties}=ts.name
       %span#gl-text I need entropy... shake your mouse !
 - else
-  .row
-    .span12
-      This paste will
-      - if @never
-        never expire
-      - else
-        expire in #{@expire}
-      and is highlighted as 
-      %span.change_to#hljs_lang
+  This paste will
+  - if @never
+    never expire
+  - else
+    expire in #{@expire}
+  and is highlighted as 
+  %span.change_to#hljs_lang
   .f
     %pre
       - if @code != nil
@@ -39,4 +37,3 @@
     %br
     Switch highlight to
     %div#placeholder (if you don't see anything here, you should enable javascript on your browser :D)
-%div= haml :footer
