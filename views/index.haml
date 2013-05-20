@@ -4,7 +4,7 @@
   %div.container
     %form.form-inline{ :id => "gluu_form", :method => 'POST', :action => '/'}
       %input{:id => 'attachments', :type => 'hidden'}
-      %textarea{:id => 'clear_code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10'}= h @code
+      %textarea{:id => 'clear_code', :class => 'input-xlarge', :rows => '10'}= h @code
       %button.btn.btn-primary#gl-but{ :type => 'submit', :disabled => true }
         Gluu
       %span
@@ -27,6 +27,9 @@
   and is highlighted as 
   %span.change_to#hljs_lang
   .f
+    -if @code == nil
+      %button.btn.btn-primary#reveal-but{ :type => "submit", :onclick => 'revealRaw' }
+        Raw
     %pre
       - if @code != nil
         %code#code= h @code
@@ -34,14 +37,13 @@
         %code#code
         %code#companions
         %code#encrypted= h @encrypted_content
-        %code#attachments= h @attachments
-        %textarea#spare
-        %button.btn.btn-primary#reveal-but{ :type => "submit", :onclick => 'revealRaw' }
-        Raw
         :javascript
           var encrypted = true;
-        %br
-        :javascript
-          var encrypted = true;
-    Switch highlight to
-    %div#placeholder (if you don't see anything here, you should enable javascript on your browser :D)
+    - if @code == nil
+      %code#attachments= h @attachments
+      %textarea#spare
+      :javascript
+        var encrypted = true;
+      %br
+      Switch highlight to
+      %div#placeholder (if you don't see anything here, you should enable javascript on your browser :D)

@@ -29,13 +29,23 @@ body {
 
 #clear_code {
   margin: 30px;
-  left: 0px;
-  right: 0px;
+  left: 30px;
+  right: 30px;
   top: 50px;
-  bottom: 50px;
+  bottom: 25%;
   position: absolute;
 }
 
+.dropzone.dz-clickable {
+  position: absolute;
+  top: 75%;
+  left: 30px;
+  right: 30px;
+  bottom: 10px;
+}
+.attachment {
+  display :block;
+}
 textarea {
   border: 1px dashed #66cccc;
   background-color: #fdf6e3;
@@ -55,6 +65,8 @@ textarea {
   border: 1px solid #66cccc;
   font-size: 12px;
 }
+
+
 
 #attachments, #encrypted {
   display:none;
