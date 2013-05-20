@@ -24,6 +24,14 @@ if ENV['VCAP_SERVICES']
     end
   end
 
+  def attachment_fs
+    @attachment_fs ||= begin
+      url = JSON.parse(ENV['VCAP_SERVICES'])['mongodb-1.8'].first["credentials"]["url"]
+      db = Mongo::Connection.from_uri(url)['attachment']
+      Mongo::Grid.new(db)      
+    end
+  end
+
   def fetch_doc(id)
    paste_db.find_one({"_id" => id })
   end
@@ -36,15 +44,42 @@ if ENV['VCAP_SERVICES']
     paste_db.remove({'expire' => { '$lte' => Time.now.to_i}})
   end
 
+  def save_attachment(dirname, fname, data)
+    id = attachment_fs.open(File.join(dirname, fname), 'w') do |f|
+      f.write(data)
+    end
+    return id
+  end
+
+  def get_attachment(fullname)
+    return attachment_fs.open(fullname, 'r').read
+  end
+
 else
   def fetch_doc(id)
     return YAML::load( File.open(File.join(DATA_FOLDER, "#{id}.yaml") ) )
   end
+
   def save_doc(data)
     File.open(File.join(DATA_FOLDER, "#{data['_id']}.yaml"), "wb") {|file| file.puts(data.to_yaml) }
   end
+
   def cleanup
     # NOOP
+  end
+
+  def save_attachment(dirname, fname, data)
+    filename = "att_#{dirname}_#{fname}"
+    dest = File.join(DATA_FOLDER, filename)
+    File.open(dest, "w") do |f|
+      f.write(data)
+    end
+    return filename
+  end
+
+  def get_attachment(fname)
+    fullname =  File.join(DATA_FOLDER, fname)
+    return File.open(fullname, 'r').read
   end
 end
 
@@ -65,7 +100,8 @@ get '/c.css' do
 end
 
 post '/paste' do
-  @code = params[:content]
+  code = params[:content]
+  attachments = params[:attachments]
 
   if ! params[:never_expire]
     ts = expiries.find{ |e| e.name == params[:expiry_delay]}
@@ -75,7 +111,7 @@ post '/paste' do
     expire = -1
   end
 
-  data = { 'crypted_content' => @code,  'expire' => expire }
+  data = { 'crypted_content' => code, 'attachments' => attachments, 'expire' => expire }
   count = get_counter(0)
 
   #begin
@@ -91,6 +127,15 @@ post '/paste' do
 #  end
   '/v/'+@name
 end
+
+post '/file-upload' do
+  content = params['file'][:tempfile].read
+  fname = params['file'][:filename]
+
+  count = get_counter(0)
+  return save_attachment(count.to_s, fname, content)
+end
+
 
 get '/v/:id' do
   if params[:id].include?('.')
@@ -111,6 +156,10 @@ get '/v/:id' do
     @code = nil
   end
 
+  if data.has_key?('attachments')
+    @attachments = data['attachments']
+  end
+
   @expire = data['expire']
   if @expire == -1
     @never = true
@@ -121,6 +170,11 @@ get '/v/:id' do
   end
 
   haml :index
+end
+
+get '/a/:id' do
+  content_type(File.extname(params[:id]))
+  get_attachment(params[:id])
 end
 
 ADMIN_PREFIX = "/admin/" + (ENV['ADMIN_TOKEN'] || '' ) + '/'

@@ -56,7 +56,13 @@ textarea {
   font-size: 12px;
 }
 
-pre code,  {
+#attachments, #encrypted {
+  display:none;
+}
+#companions {
+  background-color: white;
+}
+pre code {
   font-size: 12px;
   overflow: display;
   border: 1px solid #66cccc;

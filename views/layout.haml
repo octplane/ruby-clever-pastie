@@ -7,6 +7,9 @@
     %meta{:name => "author", :content => ""}
     %link{ :href => "/hi/styles/solarized_light.css", :type => "text/css", :rel => "stylesheet" }
     %link{ :href => "/c.css", :type => "text/css", :rel => "stylesheet" }
+    %link{ :href => "/css/dropzone.css", :type => "text/css", :rel => "stylesheet" }
+    %link{ :href => "/css/basic.css", :type => "text/css", :rel => "stylesheet" }
+
 
     %style
       :plain
@@ -16,8 +19,9 @@
     %div.container= yield
     %div= haml :footer
     / Placed at the end of the document so the pages load faster
-    %script{ :type => "text/javascript", :src =>"/scripts/jquery-1.6.1.min.js"}
+    %script{ :type => "text/javascript", :src =>"//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"}
     %script{ :type => "text/javascript", :src =>"/js/uu.js"}
     %script{ :type => "text/javascript", :src =>"/hi/highlight.pack.js"}
     %script{ :type => "text/javascript", :src =>"/js/sjcl.js"}
+    %script{ :type => "text/javascript", :src =>"/js/dropzone.min.js"}
 

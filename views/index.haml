@@ -1,9 +1,10 @@
 :javascript
   var encrypted = false;
 - if @code == ""
-  %form.form-inline{ :id => "gluu_form", :method => 'POST', :action => '/'}
-    %textarea{:id => 'clear_code', :rows => '50'}= h @code
-    %span.action
+  %div.container
+    %form.form-inline{ :id => "gluu_form", :method => 'POST', :action => '/'}
+      %input{:id => 'attachments', :type => 'hidden'}
+      %textarea{:id => 'clear_code', :style => 'width: 100%', :class => 'input-xlarge', :rows => '10'}= h @code
       %button.btn.btn-primary#gl-but{ :type => 'submit', :disabled => true }
         Gluu
       %span
@@ -14,6 +15,9 @@
           - expiries.each do |ts|
             %option{ts.html_properties}=ts.name
       %span#gl-text I need entropy... shake your mouse !
+    %form.dropzone{ :id => 'uploader', :action => '/file-upload' }
+      %div.fallback
+        %input(name ='file' type ='file' multiple)
 - else
   This paste will
   - if @never
@@ -28,12 +32,16 @@
         %code#code= h @code
       - else
         %code#code
-    %textarea#spare
-    %code#encrypted= h @encrypted_content
-    %button.btn.btn-primary#reveal-but{ :type => "submit", :onclick => 'revealRaw' }
-      Raw
-    :javascript
-      var encrypted = true;
-    %br
+        %code#companions
+        %code#encrypted= h @encrypted_content
+        %code#attachments= h @attachments
+        %textarea#spare
+        %button.btn.btn-primary#reveal-but{ :type => "submit", :onclick => 'revealRaw' }
+        Raw
+        :javascript
+          var encrypted = true;
+        %br
+        :javascript
+          var encrypted = true;
     Switch highlight to
     %div#placeholder (if you don't see anything here, you should enable javascript on your browser :D)

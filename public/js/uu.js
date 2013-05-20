@@ -54,6 +54,8 @@ function wakeUp() {
   if(parms['clef']) {
     password = parms['clef'];
     var data = $('#encrypted').text();
+    var atts = $('#attachments').text();
+
     try {
       var ct = sjcl.decrypt(password, data);
       setPasteto(ct);
@@ -63,6 +65,15 @@ function wakeUp() {
         displayError();
       }
     } 
+    try {
+      var ct = sjcl.decrypt(password, atts);
+      setAttachmentsTo(ct);
+    } catch(e) {
+      if(e instanceof sjcl.exception.corrupt) {
+        displayError();
+      }
+    } 
+
   }else {
     displayError();
   }
@@ -126,9 +137,10 @@ $(document).ready(function() {
     }
     var password = generatePassword(16);
 
-    encrypted = sjcl.encrypt(password, data);
+    var encrypted = sjcl.encrypt(password, data);
+    var attachments = sjcl.encrypt(password, $("#attachments").text());
 
-    sent_data = { content: encrypted };
+    var sent_data = { content: encrypted, attachments: attachments };
 
     var expiry;
     if($('#never_expire').is(':checked')) {
@@ -161,6 +173,16 @@ $(document).ready(function() {
     changeTo(parms['lang']);
   }
 
+  Dropzone.options.uploader = {
+  paramName: "file", // The name that will be used to transfer the file
+  maxFilesize: 10, // MB
+  success: function(file, text) {
+    var attachment_name = "Attachment:/a/"+text+"\n";
+    $("#attachments").append(attachment_name);
+    return file.previewElement.classList.add("dz-success");
+  }
+};
+
  });
 
 function loadCssAtIdentifier(cssName, identifier)
@@ -192,6 +214,23 @@ function setPasteto(content, lang) {
     var detected = $($("#code")[0]).attr('class');
     cur_lang = detected;
     $('#hljs_lang').text(detected);
+  }
+}
+
+function setAttachmentsTo(content) {
+  var attn = content.split(/\n/);
+  for(var i=0; i < attn.length; i++){
+    var currentA = attn[i];
+    if(/Attachment:/.test(currentA))
+    {
+      
+      if(/(.jpeg$|.jpg$|.png|.gif)$/.test(currentA)) {
+        $('#companions').append($('<img />', { 'src': currentA.substr(11), 'class' : 'attachment' }));
+      } else {
+        $('#companions').append($('<a />', { 'text':currentA, 'href': currentA.substr(11), 'class' : 'attachment' }));
+      }
+    } else {
+    }
   }
 }
 
