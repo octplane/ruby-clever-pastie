@@ -154,6 +154,7 @@ get '/v/:id' do
     @code = nil
   end
 
+  @attachments = ""
   if data.has_key?('attachments')
     @attachments = data['attachments']
   end
