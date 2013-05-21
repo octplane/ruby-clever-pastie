@@ -15,7 +15,6 @@ require 'stdlib'
 
 
 if ENV['VCAP_SERVICES']
-
   def paste_db
     @paste_db ||= begin
       url = JSON.parse(ENV['VCAP_SERVICES'])['mongodb-1.8'].first["credentials"]["url"]
@@ -45,14 +44,13 @@ if ENV['VCAP_SERVICES']
   end
 
   def save_attachment(dirname, fname, data)
-    id = attachment_fs.open(File.join(dirname, fname), 'w') do |f|
-      f.write(data)
-    end
-    return id
+    id = attachment_fs.put(data, :filename => File.join(dirname, fname))
+    return "#{id}#{File.extname(fname)}"
   end
 
   def get_attachment(fullname)
-    return attachment_fs.open(fullname, 'r').read
+    id = File.basename(fullname, File.extname(fullname))
+    return attachment_fs.get(BSON::ObjectId.from_string(id))
   end
 
 else
