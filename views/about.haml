@@ -3,7 +3,7 @@
 
   UU was born out of the need to have a simple paste tool that automatically syntax highlight its content. It stores the content of your
   paste into a mongodb. To ensure confidentiality, the data is encrypted in your browser before being sent to the server. The server never sees
-  the encryption keys and thus cannot read what you pastes.
+  the encryption keys and thus cannot read what you paste.
 
   %h1 Is this actually a secure tool ?
 
@@ -13,4 +13,6 @@
   %p
     %a{ :href=>"http://www.matasano.com/articles/javascript-cryptography/"} Some material about security in the browser.
 
-  %div= haml :footer
+  %h1 And my uploads ?
+  %p Right now, the uploads are stored in the database and linked to your post inside the encrypted content. No deletion is ever performed of the uploaded material 
+  but this should be fixed quite soon.
