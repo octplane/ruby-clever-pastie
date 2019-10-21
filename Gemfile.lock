@@ -7,7 +7,9 @@ GEM
       bson (~> 1.7.0)
     dm-core (1.2.0)
       addressable (~> 2.2.6)
-    haml (3.1.7)
+    haml (5.0.0)
+      temple (>= 0.8.0)
+      tilt
     kgio (2.7.4)
     mongo (1.7.0)
       bson (~> 1.7.0)
@@ -25,6 +27,7 @@ GEM
       tilt (~> 1.3, >= 1.3.3)
     sinatra-partial (0.3.2)
       sinatra
+    temple (0.8.2)
     tilt (1.3.3)
     unicorn (4.3.1)
       kgio (~> 2.6)
